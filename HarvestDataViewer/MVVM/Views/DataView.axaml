@@ -1,0 +1,188 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:HarvestDataViewer.MVVM.ViewModels"
+             xmlns:avalonia="http://oxyplot.org/avalonia"
+             x:DataType="vm:DataViewModel"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="HarvestDataViewer.MVVM.Views.DataView">
+
+    <Grid RowDefinitions="110,350,*">
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="30, 20, 0, 0">
+            <StackPanel Orientation="Vertical" Margin="0, 30, 30, 0">
+                <StackPanel Orientation="Horizontal">
+                    <TextBox
+                        Height="30"
+                        Text="{Binding FoundCar, UpdateSourceTrigger=PropertyChanged}"
+                        Foreground="Black"
+                        BorderBrush="Black"
+                        BorderThickness="0, 0, 0, 1"
+                        Watermark="Номер машины"
+                        Width="200"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Padding="10, 5, 0, 0"
+                        FontSize="15" />
+                    <Button
+                        Margin="10 0 0 0"
+                        Width="100"
+                        Command="{Binding FindWeighingRecordsCommand}">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Text="Найти" />
+                    </Button>
+                </StackPanel>
+                <TextBlock Text="{Binding ErrorMessageCarNumber }" FontSize="10" Foreground="red" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
+                        VerticalAlignment="Center" Margin="40, 0, 20, 0">
+                <TextBlock Margin="0, 0, 20, 0" FontWeight="Bold"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Text="Добавить взвешивание:" />
+                <StackPanel Orientation="Horizontal">
+                    <TextBox
+                        Height="30"
+                        Text="{Binding CarNumber, UpdateSourceTrigger=PropertyChanged}"
+                        Foreground="Black"
+                        BorderBrush="Black"
+                        BorderThickness="0, 0, 0, 1"
+                        Watermark="Номер машины"
+                        Width="150"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="0, 0, 30, 0"
+                        Padding="10, 5, 0, 0"
+                        FontSize="15" />
+                    <StackPanel>
+                        <TextBox
+                            Height="30"
+                            Text="{Binding GrossWeight, 
+                                UpdateSourceTrigger=PropertyChanged}"
+                            Foreground="Black"
+                            BorderBrush="Black"
+                            Watermark="Вес брутто"
+                            BorderThickness="0, 0, 0, 1"
+                            Width="150"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Margin="0, 12, 30, 0"
+                            Padding="10, 5, 0, 0"
+                            FontSize="15" />
+                        <TextBlock Text="{Binding ErrorMessageWeight}" FontSize="10" Foreground="red" />
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBox
+                            Height="30"
+                            Text="{Binding TareWeight, 
+                                                    UpdateSourceTrigger=PropertyChanged}"
+                            Foreground="Black"
+                            BorderBrush="Black"
+                            Watermark="Вес тары"
+                            BorderThickness="0, 0, 0, 1"
+                            Width="150"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Margin="0, 12, 30, 0"
+                            Padding="10, 5, 0, 0"
+                            FontSize="15" />
+                        <TextBlock Text="{Binding ErrorMessageWeight}" FontSize="10" Foreground="red" />
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Text="Дата тары" />
+                        <DatePicker
+                            MinYear="01-01-2021"
+                            Height="30"
+                            SelectedDate="{Binding TareDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            Foreground="Black"
+                            BorderBrush="Black"
+                            BorderThickness="0, 0, 0, 1"
+                            Width="300"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Margin="0, 0, 30, 13"
+                            Padding="10, 5, 0, 0"
+                            FontSize="15" />
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Text="Дата брутто" />
+                        <DatePicker
+                            MinYear="01-01-2021"
+                            Height="30"
+                            SelectedDate="{Binding GrossDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            Foreground="Black"
+                            BorderBrush="Black"
+                            BorderThickness="0, 0, 0, 1"
+                            Width="300"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Margin="0, 0, 15, 13"
+                            Padding="10, 5, 0, 0"
+                            FontSize="15" />
+                    </StackPanel>
+                    <Button
+                        Width="100"
+                        Command="{Binding AddNewWeighingRecordCommand}">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Text="Добавить" />
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+        <DataGrid Grid.Row="1"
+                  ItemsSource="{Binding WeighingRecords}"
+                  AutoGenerateColumns="False"
+                  Margin="30, 10, 30, 0"
+                  VerticalAlignment="Center">
+            <DataGrid.Columns>
+                <DataGridTextColumn
+                    Width="*"
+                    Binding="{Binding Id}"
+                    IsReadOnly="True"
+                    Header="Номер записи взвешивания" />
+                <DataGridTextColumn
+                    Width="*"
+                    Binding="{Binding CarNumber}"
+                    IsReadOnly="True"
+                    Header="Номер машины" />
+                <DataGridTextColumn
+                    Width="*"
+                    Binding="{Binding GrossWeight}"
+                    IsReadOnly="True"
+                    Header="Вес брутто" />
+                <DataGridTextColumn
+                    Width="*"
+                    Binding="{Binding TareWeight}"
+                    IsReadOnly="True"
+                    Header="Вес тары" />
+                <DataGridTextColumn
+                    Width="*"
+                    Binding="{Binding NetWeight}"
+                    IsReadOnly="True"
+                    Header="Вес нетто" />
+                <DataGridTextColumn
+                    Width="*"
+                    Binding="{Binding TareDate, StringFormat='dd.MM.yyyy'}"
+                    IsReadOnly="True"
+                    Header="Дата тары" />
+                <DataGridTextColumn
+                    Width="*"
+                    Binding="{Binding GrossDate, StringFormat='dd.MM.yyyy'}"
+                    IsReadOnly="True"
+                    Header="Дата брутто" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <StackPanel Grid.Row="2">
+            <avalonia:PlotView Margin="0 20 0 0" IsEnabled="False" Model="{Binding ChartViewModel.PlotModel}"
+                               MinHeight="500" />
+        </StackPanel>
+    </Grid>
+</UserControl>
